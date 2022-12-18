@@ -9,7 +9,6 @@ import {
     TextField,
     Typography,
 } from '@mui/material';
-import FileUpload from 'react-mui-fileuploader';
 import StockTable from './stock-table';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -72,14 +71,6 @@ export default function ProductFields({
             onSubmitCallback(product);
         },
     });
-
-    const handleFileUploadError = (error: any) => {
-        // Do something...
-    };
-
-    const handleFilesChange = (files: any) => {
-        // Do something...
-    };
     return (
         <Box {...props} sx={{ mt: 3 }}>
             <Card>
@@ -112,28 +103,6 @@ export default function ProductFields({
                                     value={formik.values.name}
                                 />
                             </Grid>
-                            {/* <Grid item xs={6} md={4}>
-                                <TextField
-                                    required
-                                    id="provider-input"
-                                    label="Provider"
-                                    variant="outlined"
-                                    fullWidth
-                                    error={Boolean(
-                                        formik.touched.provider &&
-                                            formik.errors.provider
-                                    )}
-                                    helperText={
-                                        formik.touched.provider &&
-                                        formik.errors.provider
-                                    }
-                                    onBlur={formik.handleBlur}
-                                    onChange={formik.handleChange}
-                                    type="text"
-                                    value={formik.values.provider}
-                                    name="provider"
-                                />
-                            </Grid> */}
                             <Grid
                                 item
                                 xs={12}
@@ -249,29 +218,6 @@ export default function ProductFields({
                                     value={formik.values.discountAmount}
                                 />
                             </Grid>
-                            {/* <Grid item xs={6} md={4}>
-                                <TextField
-                                    required
-                                    id="discount-percent-input"
-                                    label="Discount Percent"
-                                    name="discountPercent"
-                                    variant="outlined"
-                                    fullWidth
-                                    error={Boolean(
-                                        formik.touched.discountPercent &&
-                                            formik.errors.discountPercent
-                                    )}
-                                    helperText={
-                                        formik.touched.discountPercent &&
-                                        formik.errors.discountPercent
-                                    }
-                                    onBlur={formik.handleBlur}
-                                    onChange={formik.handleChange}
-                                    type="number"
-                                    value={formik.values.discountPercent}
-                                />
-                            </Grid> */}
-
                             <Grid item xs={6} md={4}>
                                 <TextField
                                     required
@@ -365,43 +311,7 @@ export default function ProductFields({
                                     variant="fullWidth"
                                 />
                             </Grid>
-                            {/* <Grid item xs={12} md={12}>
-                                <Typography sx={{ m: 1 }} variant="h5">
-                                    Product images
-                                </Typography>
-                            </Grid> */}
-                            {/* <Grid item xs={12} md={12}>
-                                <FileUpload
-                                    multiFile={true}
-                                    disabled={false}
-                                    title="Upload here images"
-                                    header="[Drag to drop]"
-                                    leftLabel="or"
-                                    rightLabel="to select files"
-                                    buttonLabel="click here"
-                                    buttonRemoveLabel="Remove all"
-                                    maxFileSize={10}
-                                    maxUploadFiles={0}
-                                    maxFilesContainerHeight={357}
-                                    errorSizeMessage={
-                                        'fill it or move it to use the default error message'
-                                    }
-                                    allowedExtensions={['jpg', 'jpeg', 'png']}
-                                    onFilesChange={handleFilesChange}
-                                    onError={handleFileUploadError}
-                                    imageSrc={
-                                        '../../../asset/resource/img/png-transparent-t-shirt-clothes.png'
-                                    }
-                                    bannerProps={{
-                                        elevation: 0,
-                                        variant: 'outlined',
-                                    }}
-                                    containerProps={{
-                                        elevation: 0,
-                                        variant: 'outlined',
-                                    }}
-                                />
-                            </Grid> */}
+
                             <Grid
                                 item
                                 xs={12}

@@ -14,7 +14,7 @@ import { Upload as UploadIcon } from '../../../asset/inline/icons/upload';
 import { Download as DownloadIcon } from '../../../asset/inline/icons/download';
 import { useNavigate } from 'react-router-dom';
 
-export default function ProductListToolbar(props: any) {
+export default function OrderListToolbar(props: any) {
     const navigate = useNavigate();
 
     return (
@@ -29,19 +29,8 @@ export default function ProductListToolbar(props: any) {
                 }}
             >
                 <Typography sx={{ m: 1 }} variant="h4">
-                    Products
+                    Orders
                 </Typography>
-                <Box sx={{ m: 1 }}>
-                    <Button
-                        color="primary"
-                        variant="contained"
-                        onClick={() => {
-                            navigate('/admin/products/add');
-                        }}
-                    >
-                        Add Product
-                    </Button>
-                </Box>
             </Box>
             <Box sx={{ mt: 3 }}>
                 <Card>
@@ -61,7 +50,7 @@ export default function ProductListToolbar(props: any) {
                                         </InputAdornment>
                                     ),
                                 }}
-                                placeholder="Search product"
+                                placeholder="Search orders"
                                 variant="outlined"
                             />
                         </Box>

@@ -32,6 +32,12 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const googleProvider = new GoogleAuthProvider();
 
+const  getGoogleUserProfile = async (/** @type {string} */ uid) => {
+    const q = query(collection(db, 'users'), where('uid', '==', uid));
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map(doc => doc.data());;
+}
+
 const signInWithGoogle = async () => {
     try {
         const res = await signInWithPopup(auth, googleProvider);
@@ -130,4 +136,5 @@ export {
     registerWithEmailAndPassword,
     sendPasswordReset,
     logout,
+    getGoogleUserProfile
 };

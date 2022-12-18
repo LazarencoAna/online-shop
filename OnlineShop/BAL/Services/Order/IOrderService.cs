@@ -6,6 +6,8 @@ namespace OnlineShop.BAL.Services.Order
     {
         Task<int> MakeOrderAsync(OrderModel order, string? userId);
         Task<IEnumerable<OrderModel>> GetOrdersAsync(string userId);
+        Task<IEnumerable<OrderModel>> GetAllOrdersAsync();
+        Task<IEnumerable<OrderModel>> GetAllOrdersForUserAsync(string userId);
 
     }
 }

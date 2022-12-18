@@ -48,13 +48,13 @@ function LoginForm() {
         useCustomSignInWithEmailAndPassword();
 
     useEffect(() => {
-        if (auth?.user) {
+        if (auth?.user && auth?.userProfile) {
             const state = location?.state as CustomState;
             if (state?.from?.pathname) {
                 navigate(state?.from?.pathname);
-            } else navigate('/');
+            } else navigate('/admin');
         }
-    }, [auth?.user]);
+    }, [auth?.user, auth?.userProfile]);
 
     return (
         <div className="login__container">

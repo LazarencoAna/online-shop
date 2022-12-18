@@ -101,7 +101,10 @@ export default function ProductCategorySelector({
         categoryDropDetails: CategoryDropdownDetails
     ) => {
         return (
-            <FormControl key={categoryDropDetails.index}>
+            <FormControl
+                key={categoryDropDetails.index}
+                sx={{ m: 1, minWidth: 200 }}
+            >
                 <InputLabel id="category-select-label">Category</InputLabel>
                 <Select
                     labelId="category-select-label"

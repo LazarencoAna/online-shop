@@ -16,10 +16,27 @@ namespace OnlineShop.BAL.Services.Users
             _mapper = mapper;
         }
 
+        public async Task<IEnumerable<UserAccount>> GetAllUserAccountsAsync()
+        {
+            var dbuserAccounts = await _shopDbContext.UserAccounts.ToListAsync();
+            var userAccounts = new List<UserAccount>();
+            foreach (var item in dbuserAccounts)
+            {
+                var userAccount = new UserAccount
+                {
+                    DisplayName = item.DisplayName,
+                    Email = item.Email,
+                    UserAccountId = item.UserAccountId,
+                };
+                userAccounts.Add(userAccount);
+            }
+            return userAccounts;
+        }
+
         public async Task<string> UpsertUserAccountAsync(string userId, UserAccount userAccount)
         {
             var euserAccount = await _shopDbContext.UserAccounts.FirstOrDefaultAsync(uc => uc.UserAccountId == userId);
-            if(euserAccount is not null)
+            if (euserAccount is not null)
             {
                 euserAccount.Email = userAccount.Email;
                 euserAccount.DisplayName = userAccount.DisplayName;
@@ -30,7 +47,7 @@ namespace OnlineShop.BAL.Services.Users
                 userAccount.UserAccountId = userId;
                 _shopDbContext.UserAccounts.Add(userAccount);
             }
-           
+
             await _shopDbContext.SaveChangesAsync();
             return userId;
         }

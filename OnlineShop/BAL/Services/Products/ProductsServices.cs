@@ -19,43 +19,54 @@ public class ProductsServices : IProductsServices
 
     public async Task<int> AddProductAsync(ProductModel product)
     {
-        var productEntity = _mapper.Map<Product>(product);
-        _shopDbContext.Products.Add(productEntity);
-        await _shopDbContext.SaveChangesAsync();
-        product.DeliveryTypes?.ForEach(dt =>
+        try
         {
-            var deliveryMethod = new ProductDeliveryMethod
-            {
-                DeliveryTypeId = dt.DeliveryTypeId,
-                ProductId = productEntity.ProductId
-            };
-            _shopDbContext.ProductDeliveryMethods.Add(deliveryMethod);
-        });
-        await _shopDbContext.SaveChangesAsync();
 
-        product.ImagesUrl?.ForEach(image =>
-        {
-            _shopDbContext.ProductImages.Add(new ProductImage
+            var productEntity = _mapper.Map<Product>(product);
+            productEntity.CategoryId = productEntity.CategoryId == 0 ? null : productEntity.CategoryId;
+            _shopDbContext.Products.Add(productEntity);
+            await _shopDbContext.SaveChangesAsync();
+            product.DeliveryTypes?.ForEach(dt =>
             {
-                ProductId = productEntity.ProductId,
-                URL = image
+                var deliveryMethod = new ProductDeliveryMethod
+                {
+                    DeliveryTypeId = dt.DeliveryTypeId,
+                    ProductId = productEntity.ProductId
+                };
+                _shopDbContext.ProductDeliveryMethods.Add(deliveryMethod);
             });
-        });
-        await _shopDbContext.SaveChangesAsync();
+            await _shopDbContext.SaveChangesAsync();
 
-        product.Stocks?.ForEach(stock =>
-        {
-            _shopDbContext.Stocks.Add(new Stock
+            product.ImagesUrl?.ForEach(image =>
             {
-                Color = stock.Color,
-                ProductId = productEntity.ProductId,
-                Quantity = stock.Quantity,
-                Size = stock.Size
+                _shopDbContext.ProductImages.Add(new ProductImage
+                {
+                    ProductId = productEntity.ProductId,
+                    URL = image
+                });
             });
-        });
+            await _shopDbContext.SaveChangesAsync();
 
-        await _shopDbContext.SaveChangesAsync();
-        return productEntity.ProductId;
+            product.Stocks?.ForEach(stock =>
+            {
+                _shopDbContext.Stocks.Add(new Stock
+                {
+                    Color = stock.Color,
+                    ProductId = productEntity.ProductId,
+                    Quantity = stock.Quantity,
+                    Size = stock.Size
+                });
+            });
+
+            await _shopDbContext.SaveChangesAsync();
+            return productEntity.ProductId;
+
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+
     }
 
     public async Task DeleteProductAsync(int productId)
@@ -65,13 +76,14 @@ public class ProductsServices : IProductsServices
         {
             return;
         }
-        var dtToRemove = _shopDbContext.ProductDeliveryMethods.Where(pdm => pdm.ProductId == product.ProductId);
-        var imgToRemove = _shopDbContext.ProductImages.Where(pi => pi.ProductId == product.ProductId);
-        var stocksToRemove = _shopDbContext.Stocks.Where(s => s.ProductId == product.ProductId);
-        _shopDbContext.ProductDeliveryMethods.RemoveRange(dtToRemove);
-        _shopDbContext.ProductImages.RemoveRange(imgToRemove);
-        _shopDbContext.Stocks.RemoveRange(stocksToRemove);
-        _shopDbContext.Products.Remove(product);
+        product.IsDeleted=true;
+        //var dtToRemove = _shopDbContext.ProductDeliveryMethods.Where(pdm => pdm.ProductId == product.ProductId);
+        //var imgToRemove = _shopDbContext.ProductImages.Where(pi => pi.ProductId == product.ProductId);
+        //var stocksToRemove = _shopDbContext.Stocks.Where(s => s.ProductId == product.ProductId);
+        //_shopDbContext.ProductDeliveryMethods.RemoveRange(dtToRemove);
+        //_shopDbContext.ProductImages.RemoveRange(imgToRemove);
+        //_shopDbContext.Stocks.RemoveRange(stocksToRemove);
+        //_shopDbContext.Products.Remove(product);
         await _shopDbContext.SaveChangesAsync();
     }
 
@@ -99,7 +111,7 @@ public class ProductsServices : IProductsServices
         catch (Exception e)
         {
 
-            throw e ;
+            throw e;
         }
     }
 
@@ -192,8 +204,11 @@ public class ProductsServices : IProductsServices
     public async Task<IEnumerable<ProductModel>> GetProductsAsync()
     {
         var products = await _shopDbContext.Products
+            .Where(p => !p.IsDeleted)
             .Include(p => p.Stock)
-            .Include(p => p.ImagesUrl).ToListAsync();
+            .Include(p => p.ImagesUrl)
+            .Include(d => d.DeliveryMethods)
+            .ToListAsync();
         return _mapper.Map<IEnumerable<ProductModel>>(products);
     }
 }

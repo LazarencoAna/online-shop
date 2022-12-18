@@ -20,7 +20,9 @@ function Message({
             <p className="message__subtitle">{subtitle}</p>
             {!removeButton && (
                 <Button
-                    onClick={() => (onButtonClick && onButtonClick()) ||  navigate(-1)}
+                    onClick={() =>
+                        (onButtonClick && onButtonClick()) || navigate(0)
+                    }
                     className="button"
                 >
                     <img

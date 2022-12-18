@@ -3,7 +3,7 @@ import { Outlet, Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../common/auth.hook';
 import { CustomState } from '../common/route.types';
 
-export default function AuthenticatedRoute() {
+export default function AuthenticatedAdminRoute() {
     const auth = useAuth();
     const location = useLocation();
 
@@ -12,8 +12,16 @@ export default function AuthenticatedRoute() {
         return <Navigate to={from?.pathname} state={{}} />;
     }
 
-    
-    return auth?.user ? (
+    if (!auth?.user && !auth?.userProfile) {
+        return (
+            <Navigate
+                to="/login"
+                state={{ from: { pathname: location.pathname } }}
+            />
+        );
+    }
+
+    return auth?.userProfile?.role === 'operator' ? (
         <Outlet />
     ) : (
         <Navigate

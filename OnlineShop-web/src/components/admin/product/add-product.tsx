@@ -18,7 +18,7 @@ export default function AddProduct(props: any) {
             barcode: product.barcode ?? '',
             categoryId: product.categoryId ?? 0,
             deliveryTypes: product.deliveryMethods,
-            imagesUrl: ['Test1', 'test'],
+            imagesUrl: product.imagesUrl,
             stocks:
                 product.stock?.map((stock) => {
                     var s: IStock = {

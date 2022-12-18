@@ -23,9 +23,9 @@ namespace OnlineShop.Controllers
 
         // GET: api/<UserController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<IEnumerable<UserAccount>> Get()
         {
-            return new string[] { "value1", "value2" };
+            return await _userService.GetAllUserAccountsAsync();
         }
 
         // GET api/<UserController>/5

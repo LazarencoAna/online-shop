@@ -10,13 +10,9 @@ import {
     Typography,
 } from '@mui/material';
 import { Search as SearchIcon } from '../../../asset/inline/icons/search';
-import { Upload as UploadIcon } from '../../../asset/inline/icons/upload';
-import { Download as DownloadIcon } from '../../../asset/inline/icons/download';
 import { useNavigate } from 'react-router-dom';
 
-export default function ProductListToolbar(props: any) {
-    const navigate = useNavigate();
-
+export default function UserListToolbar(props: any) {
     return (
         <Box {...props}>
             <Box
@@ -29,19 +25,8 @@ export default function ProductListToolbar(props: any) {
                 }}
             >
                 <Typography sx={{ m: 1 }} variant="h4">
-                    Products
+                    Customers
                 </Typography>
-                <Box sx={{ m: 1 }}>
-                    <Button
-                        color="primary"
-                        variant="contained"
-                        onClick={() => {
-                            navigate('/admin/products/add');
-                        }}
-                    >
-                        Add Product
-                    </Button>
-                </Box>
             </Box>
             <Box sx={{ mt: 3 }}>
                 <Card>
@@ -61,7 +46,7 @@ export default function ProductListToolbar(props: any) {
                                         </InputAdornment>
                                     ),
                                 }}
-                                placeholder="Search product"
+                                placeholder="Search customer"
                                 variant="outlined"
                             />
                         </Box>

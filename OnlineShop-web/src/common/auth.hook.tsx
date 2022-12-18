@@ -1,9 +1,10 @@
-import React, { createContext, useContext, useEffect } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import {
     auth,
     registerWithEmailAndPassword,
     logout,
     signInWithGoogle,
+    getGoogleUserProfile,
 } from '../firebase';
 import { User } from 'firebase/auth';
 import {
@@ -19,10 +20,15 @@ import { IUserAccount } from '../api/store-api';
 export type AuthType = {
     user: User | undefined | null;
     loadingProfile: boolean;
+    userProfile: IGoogleUserProfile | undefined;
     loginWithGoogle: () => void;
     logout: () => void;
     signupLocal: (username: string, email: string, password: string) => void;
 };
+
+export interface IGoogleUserProfile {
+    role: string;
+}
 
 const authContext = createContext<AuthType | null>(null);
 
@@ -40,9 +46,10 @@ export function useCustomSignInWithEmailAndPassword(): EmailAndPasswordActionHoo
         useSignInWithEmailAndPassword(auth);
     return [signInWithEmailAndPassword, user, loading, error];
 }
-
+ 
 function useProvideAuth(): AuthType {
     const [user, loading, error] = useAuthState(auth);
+    const [userProfile, setUserProfile] = useState<IGoogleUserProfile>();
     const dispatch = useDispatch();
     //     firebase.auth().currentUser.getIdToken(/ forceRefresh / true)
     // .then(function(idToken) {
@@ -51,15 +58,28 @@ function useProvideAuth(): AuthType {
 
     // });
 
+    const getGoogleProfile = async () => {
+        let userProfiles = await getGoogleUserProfile(user?.uid ?? '');
+        if (userProfiles) {
+            setUserProfile(userProfiles[0] as IGoogleUserProfile);
+        }
+        else {
+            setUserProfile({role:'user'});
+        }
+    };
+
     useEffect(() => {
         if (user) {
             console.log(user);
             let userAccount = {
                 userAccountId: user.uid,
-                displayName: user.displayName,
+                displayName: user.displayName ?? user.email,
                 email: user.email,
             } as IUserAccount;
             UpdateUserAccountAsync(userAccount).then(() => {});
+            getGoogleProfile().then(() => {});
+        } else {
+            setUserProfile(undefined);
         }
     }, [user]);
 
@@ -76,6 +96,7 @@ function useProvideAuth(): AuthType {
 
     return {
         user,
+        userProfile,
         loadingProfile: loading,
         signupLocal,
         loginWithGoogle,

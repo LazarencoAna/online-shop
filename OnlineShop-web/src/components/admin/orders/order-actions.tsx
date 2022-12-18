@@ -52,12 +52,17 @@ const StyledMenu = styled((props: MenuProps) => (
     },
 }));
 
-export default function ProductActions({ productId }: { productId: number }) {
+export default function OrderActions({
+    userId,
+    orderId,
+}: {
+    userId?: string;
+    orderId: number;
+}) {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
 
     const navigate = useNavigate();
-    const { mutate, isLoading } = useProductDeleteMutation();
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -67,11 +72,7 @@ export default function ProductActions({ productId }: { productId: number }) {
     };
 
     const handleEdit = () => {
-        navigate('/admin/products/edit/' + productId);
-    };
-
-    const onDelete = () => {
-        mutate(productId);
+        navigate(`/admin/orders/${userId}/${orderId}`);
     };
 
     return (
@@ -97,11 +98,7 @@ export default function ProductActions({ productId }: { productId: number }) {
             >
                 <MenuItem onClick={handleEdit} disableRipple>
                     <EditIcon />
-                    Edit
-                </MenuItem>
-                <MenuItem onClick={onDelete} disableRipple>
-                    <RemoveIcon />
-                    Delete
+                    View
                 </MenuItem>
             </StyledMenu>
         </div>

@@ -48,9 +48,9 @@ function Header() {
                             alt="Sneakers"
                         />
                         <div className="header__logo-text">
-                            <h1 className="header__title">React Sneakers</h1>
+                            <h1 className="header__title">Online Shop</h1>
                             <p className="header__subtitle">
-                                Store with best sneakers
+                                Store with best shoes
                             </p>
                         </div>
                     </div>
@@ -92,6 +92,34 @@ function Header() {
                             <img
                                 className="header__icon"
                                 src="/asset/sneakers/favorite.svg"
+                                alt="Heart"
+                            />
+                        </li>
+                    </NavLink>
+                    <NavLink
+                        to="/about"
+                        className={({ isActive }) => {
+                            return isActive ? 'header__link_active' : '';
+                        }}
+                    >
+                        <li>
+                            <img
+                                className="header__icon"
+                                src="/asset/sneakers/icons-about.png"
+                                alt="Heart"
+                            />
+                        </li>
+                    </NavLink>
+                    <NavLink
+                        to="/contact"
+                        className={({ isActive }) => {
+                            return isActive ? 'header__link_active' : '';
+                        }}
+                    >
+                        <li>
+                            <img
+                                className="header__icon"
+                                src="/asset/sneakers/icons-contact.png"
                                 alt="Heart"
                             />
                         </li>

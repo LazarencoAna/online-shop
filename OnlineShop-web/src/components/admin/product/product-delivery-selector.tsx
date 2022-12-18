@@ -9,9 +9,8 @@ import {
     Select,
     SelectChangeEvent,
 } from '@mui/material';
-import { useQuery } from 'react-query';
-import { fetchProductDeliveryMethods } from '../../../api/StoreApi';
 import { IDeliveryMethod } from '../../../api/store-api';
+import { productDeliveryMethodsQuery } from '../../../api/use-store-api';
 
 interface IProductDeliverySelector {
     onChangeDeliveryMethods: (deliveryMethods: IDeliveryMethod[]) => void;
@@ -22,10 +21,7 @@ export default function ProductDeliverySelector({
     onChangeDeliveryMethods,
     checkedDeliveryMethods,
 }: IProductDeliverySelector) {
-    const productDeliveryMethods = useQuery({
-        queryKey: ['productDeliveryMethods'],
-        queryFn: fetchProductDeliveryMethods,
-    });
+    const productDeliveryMethods = productDeliveryMethodsQuery();
 
     const [deliveryMethods, setDeliveryMethods] = React.useState<string[]>(
         productDeliveryMethods.data

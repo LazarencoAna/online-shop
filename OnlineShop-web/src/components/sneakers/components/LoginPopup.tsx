@@ -31,14 +31,15 @@ function LoginPopup() {
         signInWithEmailAndPassword(values['email'], values['password']);
     };
 
-    const register = () => {
+    const register = (event:any) => {
+        event.preventDefault();
+
         if (!values['password'] || !values['email']) {
             return;
         }
         auth?.signupLocal(values['email'], values['email'], values['password']);
     };
 
-    const handleSubmit = () => {};
 
     const renderLogin = () => (
         <div className="login">
@@ -105,7 +106,7 @@ function LoginPopup() {
 
     const renderRegister = () => (
         <div className="login">
-            <form onSubmit={handleSubmit} className="login__form" noValidate>
+            <form  className="login__form" noValidate>
                 <img
                     className="logo logo_type_login"
                     src={logo}
